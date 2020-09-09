@@ -1,0 +1,25 @@
+Adversarial attacks have been one of the main security concerns of DNN models.
+Adversarial attacks slightly modify the input data to a DNN model in a certain way so that the
+inference result will not totally wrong. Researchers have been proposing defense
+mechanisms against adversarial attacks. For example, Feature Squeezing detects
+adversary examples by median smoothing filter and a data bit width compression.
+In general, in the defense, before an input is fed into the network model, it
+needs to be checked first by a "detector" for filtering out adversarial inputs.
+
+Currently, domain specific hardware accelerators are widely used for DNN models.
+However, the defending of adversarial attacks were not considered in the design
+of those accelerators. Simply running the detection network in those
+accelerators may cause significant performance overhead. Additionally, using a
+separate accerlator just for the detection network may cause security issues as
+the communication (data transfer) in between the two accelerators are not
+protected. Thus, it is necessary to propose a new DNN accelerator with
+considering the existence of the detection network.
+
+This work made a key insight that the most important requirements of
+the detection-aware accelerator are as follows:
+1) High-bandwidth data sharing between the target network and the detection
+network.
+2) The elasticity of assigning hardware resource to the detection network.
+3) The need of CPU as some of the calculations run more efficiently on the CPU.
+
+Based on this insight, this work proposed a new DNN accelerator namde DNNGuard.
