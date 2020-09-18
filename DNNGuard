@@ -1,3 +1,5 @@
+Title: DNNGuard: An Elastic Hetergeneous DNN Accelerator Architecture against Adversarial Attacks
+Conference: ASPLOS'20
 Adversarial attacks have been one of the main security concerns of DNN models.
 Adversarial attacks slightly modify the input data to a DNN model in a certain way so that the
 inference result will not totally wrong. Researchers have been proposing defense

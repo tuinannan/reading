@@ -1,0 +1,32 @@
+Title: COIN Attacls: On Insecurity of Enclave Untrusted Interfaces in SGX
+Coference: ASPLOS'20
+
+Intel SGX is a hardware-based trusted execution environment which enables an 
+application to execute confidential code and data in an enclave. The operating 
+system is untrusted in SGX's threat model as there have been numerous reported
+security vulnerabilities that can used by an attacker to manipulate the OS. In
+SGX, the OS can only control/communicate with the enclave code/data through the
+pre-defined enclave interfaces. SGX users can specify the interface and the 
+SGX SDK will automatically generates a configuration file defined by a domain 
+language called EDL. Based on this configuration, SGX does some basic sanitizing 
+check on the input/output of ECALLs and OCALLs. For example, if an ECALL has 
+an pointer argurement, the user can specify the size of the parameter in the 
+configuration file and SGX will only copy that size of data for doing the ECALL.
+
+However, this paper makes a key insight that the basic interface sanitizing done
+by SGX is not enough: each application typically consistf of multiple ECALLs, 
+and an ECALL may do an OCALL to read some out-of-enclave data. As the OS is 
+untrusted, the ECALLs and OCALLs in an application may not be called in the 
+sequence they are supposed to, causing unpredictable errors or even leaking 
+confidential data. In this paper, the authors summarize the attacks based on 
+this phenonmena as COIN attacks, which stands for Concurrency (one ECALL being 
+called by different threads at the same time), Order(ECALLs and OCALLs are 
+called in a wrong order), Inputs(input manipulation), and Nested(an ECALL is
+made while the enclave is running an OCALL).
+
+Based on these attacks, this paper proposes an extensible framework to 
+systematically study the security of current enclave library. This framework is
+built based on instruction emulation using QEMU, and multiple policies are
+implemented in it to detect vulnerabilities. The result shows that in 10 
+open-source projects they found 52 vulnerabilities in them, including a whole
+SGX memory leak.
