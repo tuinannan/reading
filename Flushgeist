@@ -1,0 +1,27 @@
+Title: Flushgeist: Cache Leaks from Beyond the Flush
+
+Cofenrence: arxiv only
+
+Using flushing intrusctions such as clflush and wbinvd to clean
+the changes in cache (especially L1 cache) has been a popular
+way to defend cache side channel attacks and transient execution
+based attacks. For a long time, people believed as long as the 
+cache lines are flushed, there will not be any information left
+in cache. However, this paper provides a very interesting 
+observation that flushing instructions actually only flushes
+the data/content of the cache line, but not the control state.
+Control state is basically the metadata that are used to decide
+which cache line in a set should be evicted when necessary. For
+example, for a tree-based pseudo LRU replacement policy, when 
+all the cache lines in a set are flushed, the internal data (the
+nodes) in the replacement tree are kept, and are not even changed
+when new cache lines are brought into this set.
+
+This observation is verified on Intel products for both L1 and L2
+caches. Based on this observation, this paper builds an extended
+prime + probe attack which can still leak the victim's secret
+even when the victim flushes the target cache set after his 
+execution. Thus previous defenses on both cache attacks and 
+transient execution based attacks should be revised.
+
+
