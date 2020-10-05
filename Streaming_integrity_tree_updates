@@ -1,0 +1,30 @@
+Title: Streaming Integrity Tree Updates for Secure Persistent Non-Volatile Memory
+Conference: Micro'20
+
+It is extremely important to provide memory privacy and integrity guarantee 
+for non-volatile main memory (NVMM) as it offers crash recovery. Typically,
+Bonsai Merkle tree and counter-mode AES memory encryption are used for
+NVMM. However, these security methods are not yet compatible with NVMM.
+To guarantee the correct crash recovery. The metadata of different data
+blocks should be persisted in memory in a correct sequence. Specifically,
+say cacheline_1 and cacheline_2 are being written to memory, the 
+corresponding MAC and counters of cacheline_1 cannot be written to memory
+until the update of root node is done. Additionally, the update of the root
+node caused by cacheline_2 cannot start until the update caused by cacheline_1
+finishes. These sequential updates can cause significant latency as hash
+calculation usually takes over 90 CPU cycles.
+
+In this paper, the authors propose to pipeline the update of merkle tree
+to reduce this latency. The insight is the second update of the merkle tree
+does not necessarily need to start after the first one finishes. We only need
+to make sure that the second update of each level is done after the first 
+update on this level, i.e., the update of each level in the tree can be 
+pipelined. This gives significant performance benenifit especially when the
+tree is very deep. 
+
+Another insight of this paper is that when using epoch persistency, the 
+updates of the tree inside an epoch can be totally out of order, and this
+will not cause an write-afte-write hazard. Under this insight, we only need 
+to guratee the update seuence of different epochs.
+
+
