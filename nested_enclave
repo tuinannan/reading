@@ -1,0 +1,28 @@
+Title: Nested Enclave: Supporting Fine-grained Hierarchical Isolation with SGX
+Coference: ISCA 2020
+
+Intel SGX is  promising technology which provides strong calculation and 
+memory isolation between processes and between the security-sentive part
+and security-insensitive part of a process. SGX reserves a virtual address
+region as the enclave address, data and code inside this region will be
+mapped to a specific physical memory region, the data privacy and integrity
+of which are protected by hardware. However, SGX only provides one level
+of security: the data and code inside an enclave are secure, and the outside
+world is insecure. However, real-life applications sometimes need multiple-
+level security: if the SGX user is hosting a web application on a server,
+to secure the web user's execution, the host will generate one enclave for
+each user. However, all these enclaves need to use standard library which 
+also need to be secured but may consist of security vulnerablities. With 
+the native SGX design, we will have to generate another enclave for the 
+library and the commucation between the web user enclave and the library
+can be secured by standard cryptographic algorithms. 
+
+The insight of this paper is that the communication between enclaves are
+very expensive as the CPU needs to first leave the enclave mode, and
+then re-enter the enclave mode, adding contect switch latency to the 
+critical path. To solve this problem, this paper propose "nest enclave",
+in which an enclave can be an inner enclave of another enclave, to provide
+multiple-level security in SGX. Nested enclave only requries littel changes
+on the access control policy of SGX: previouly no other enclave is allowed
+to access data in an enclave; however, with nested enclave, inner enclaves
+are able to access data in their outer enclaves.
